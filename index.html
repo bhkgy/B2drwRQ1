@@ -31,7 +31,7 @@
     </style>
 </head>
 <body>
-    <h1>Snake Game</h1>
+    <h1>ヘビゲーム</h1>
     <div class="score">スコア: <span id="score">0</span></div>
     <canvas id="gameCanvas" width="400" height="400"></canvas>
     <script>
@@ -130,7 +130,7 @@
         function gameOver() {
             isGameOver = true;
             clearInterval(game);
-            alert('Game Over! Press Spacebar to restart.');
+            alert('ゲームオーバー！ スペースキーを押してリスタートします。');
         }
 
         function resetGame() {
@@ -144,10 +144,10 @@
             document.getElementById('score').innerText = score;
             d = undefined;
             isGameOver = false;
-            game = setInterval(draw, 150); // Adjust speed here (milliseconds)
+            game = setInterval(draw, 150); // ゲームの速度を調整します（ミリ秒）
         }
 
-        resetGame(); // Start the game initially
+        resetGame(); // 最初にゲームを開始します
     </script>
 </body>
 </html>
