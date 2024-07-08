@@ -29,6 +29,7 @@
             border: 1px solid #000;
         }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-Xz12AYAw+3HjKhtKmUW6qU8I3D0e+8G/Ykq37TJnd1H3uXo1iM0Rb6vBkgwZ4rX3IO8jCyRvOeZMYxxZT37AeQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
     <h1>ヘビゲーム</h1>
@@ -40,10 +41,6 @@
         const box = 20;
         const rows = canvas.height / box;
         const cols = canvas.width / box;
-
-        // りんごの画像をロード
-        const appleImg = new Image();
-        appleImg.src = 'https://static.wikia.nocookie.net/minecraft_ja_gamepedia/images/a/af/Apple_JE3_BE3.png/revision/latest?cb=20200926130745';
 
         let snake = [];
         snake[0] = { x: 9 * box, y: 10 * box };
@@ -97,8 +94,10 @@
                 ctx.strokeRect(snake[i].x, snake[i].y, box, box);
             }
 
-            // りんごの画像を描画
-            ctx.drawImage(appleImg, food.x, food.y, box, box);
+            // りんごのアイコンを描画
+            ctx.fillStyle = 'red';
+            ctx.font = '20px FontAwesome';
+            ctx.fillText('\uf57c', food.x, food.y + box);
 
             let snakeX = snake[0].x;
             let snakeY = snake[0].y;
