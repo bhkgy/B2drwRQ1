@@ -45,10 +45,7 @@
         let snake = [];
         snake[0] = { x: 9 * box, y: 10 * box };
 
-        let food = {
-            x: Math.floor(Math.random() * cols) * box,
-            y: Math.floor(Math.random() * rows) * box
-        };
+        let foods = [];
 
         let score = 0;
         let d;
@@ -87,6 +84,7 @@
                 }
             }
 
+            // ヘビの描画
             for (let i = 0; i < snake.length; i++) {
                 ctx.fillStyle = (i == 0) ? 'green' : 'white';
                 ctx.fillRect(snake[i].x, snake[i].y, box, box);
@@ -94,11 +92,14 @@
                 ctx.strokeRect(snake[i].x, snake[i].y, box, box);
             }
 
-            // りんごのアイコンを描画
-            ctx.fillStyle = 'red';
-            ctx.font = '20px FontAwesome';
-            ctx.fillText('\uf57c', food.x, food.y + box);
+            // りんごの描画
+            foods.forEach(food => {
+                ctx.fillStyle = 'red';
+                ctx.font = '20px FontAwesome';
+                ctx.fillText('\uf57c', food.x, food.y + box);
+            });
 
+            // ヘビの移動処理
             let snakeX = snake[0].x;
             let snakeY = snake[0].y;
 
@@ -107,27 +108,30 @@
             if (d == 'RIGHT') snakeX += box;
             if (d == 'DOWN') snakeY += box;
 
-            if (snakeX == food.x && snakeY == food.y) {
-                score++;
-                document.getElementById('score').innerText = score;
-                food = {
-                    x: Math.floor(Math.random() * cols) * box,
-                    y: Math.floor(Math.random() * rows) * box
-                };
-            } else {
-                snake.pop();
-            }
+            // りんごとの衝突判定
+            foods.forEach((food, index) => {
+                if (snakeX == food.x && snakeY == food.y) {
+                    score++;
+                    document.getElementById('score').innerText = score;
+                    // 新しいりんごを追加
+                    foods.splice(index, 1);
+                    addFood();
+                }
+            });
 
+            // 新しい頭を作成
             let newHead = {
                 x: snakeX,
                 y: snakeY
             };
 
+            // ゲームオーバー判定
             if (snakeX < 0 || snakeX >= canvas.width || snakeY < 0 || snakeY >= canvas.height || collision(newHead, snake)) {
                 gameOver();
                 return;
             }
 
+            // ヘビの先頭に新しい頭を追加
             snake.unshift(newHead);
         }
 
@@ -149,15 +153,22 @@
         function resetGame() {
             snake = [];
             snake[0] = { x: 9 * box, y: 10 * box };
-            food = {
-                x: Math.floor(Math.random() * cols) * box,
-                y: Math.floor(Math.random() * rows) * box
-            };
+            foods = [];
             score = 0;
             document.getElementById('score').innerText = score;
             d = undefined;
             isGameOver = false;
+            addFood(); // 最初のりんごを追加
             game = setInterval(draw, 150); // ゲームの速度を調整します（ミリ秒）
+        }
+
+        function addFood() {
+            for (let i = 0; i < 4; i++) {
+                foods.push({
+                    x: Math.floor(Math.random() * cols) * box,
+                    y: Math.floor(Math.random() * rows) * box
+                });
+            }
         }
 
         resetGame(); // 最初にゲームを開始します
